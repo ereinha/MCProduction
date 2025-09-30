@@ -82,16 +82,16 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('file:MiniAOD_HToAATo2Tau2Photon.root'),
     #outputCommands = process.MINIAODSIMEventContent.outputCommands,
     outputCommands = process.MINIAODSIMEventContent.outputCommands+cms.untracked.vstring(
-	'keep *_generalTracks_*_*',
+        'keep *_generalTracks_*_*',
         'keep *_siPixelClusters_*_*',
-	'keep *_siStripClusters_*_*',
-	'keep *_siStripMatchedRecHits_*_*',
-	'keep *_siPixelRecHits_*_*',
+        'keep *_siStripClusters_*_*',
+        'keep *_siStripMatchedRecHits_*_*',
+        'keep *_siPixelRecHits_*_*',
         'keep *_ecalRecHit_*_*',
-	'keep *_hbhereco_*_*',
-	'keep *_reducedEcalRecHits*_*_*',
-	'keep *_reducedHcalRecHits_*_*'
-        ),
+        'keep *_hbhereco_*_*',
+        'keep *_reducedEcalRecHits*_*_*',
+        'keep *_reducedHcalRecHits_*_*'
+    ),
     overrideBranchesSplitLevel = cms.untracked.VPSet(
         cms.untracked.PSet(
             branch = cms.untracked.string('patPackedCandidates_packedPFCandidates__*'),

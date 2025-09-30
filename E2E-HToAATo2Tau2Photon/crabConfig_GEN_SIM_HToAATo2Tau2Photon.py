@@ -3,7 +3,7 @@ config = config()
 # See parameter defintions here: https://twiki.cern.ch/twiki/bin/view/CMSPublic/CRAB3ConfigurationFile#CRAB_configuration_parameters
 Mass_tag = 'm3p6To8'
 # Local job directory will be created in:
-config.General.requestName = 'HToAATo2Tau2Photon_Hadronic_%s_pythia8_GEN_SIM'%Mass_tag
+config.General.requestName = 'HToAATo2TauHad2Photon_%s_pythia8_GEN_SIM'%Mass_tag
 config.General.workArea = 'large_scale_runs'
 config.General.transferOutputs = True
 config.General.transferLogs = True

@@ -188,7 +188,7 @@ process.generator = cms.EDFilter("Pythia8GeneratorFilter",
             daughter2ID = cms.uint32(35)
         )
     ),
-    comEnergy = cms.double(14000.0),
+    comEnergy = cms.double(13600),
     crossSection = cms.untracked.double(1.0),
     filterEfficiency = cms.untracked.double(1),
     maxEventsToPrint = cms.untracked.int32(1),

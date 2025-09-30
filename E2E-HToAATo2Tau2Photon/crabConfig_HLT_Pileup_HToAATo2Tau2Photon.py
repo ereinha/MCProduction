@@ -3,11 +3,10 @@ config = config()
 
 Mass_tag = 'm3p6To8'
 
-inputDataset_ = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-crab_HToAATo2Tau2Photon_Hadronic_m3p6To8_pythia8_GEN_SIM-4c1a75253ec308e4f6ca815a46d2abb6/USER'
-
+inputDataset_ = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-crab_HToAATo2TauHad2Photon_m3p6To8_pythia8_GEN_SIM-7ff08846ee561c0a94aa43521459e37b/USER'
 
 #config.section_('General')
-config.General.requestName = '%s_HLT_Pileup'%Mass_tag
+config.General.requestName = 'HToAATo2TauHad2Photon_%s_pythia8_HLT_Pileup'%Mass_tag
 config.General.workArea = 'large_scale_runs'
 config.General.transferOutputs = True
 config.General.transferLogs = True

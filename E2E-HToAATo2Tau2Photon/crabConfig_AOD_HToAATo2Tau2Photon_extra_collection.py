@@ -3,11 +3,11 @@ config = config()
 
 Mass_tag = 'm3p6To8'
 
-inputDataset_ = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-m3p6To8_HLT_Pileup-26240d1e6039ee29161351aa2c33106e/USER'
+inputDataset_ = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-HToAATo2TauHad2Photon_m3p6To8_pythia8_HLT_Pileup-26240d1e6039ee29161351aa2c33106e/USER'
 
 
 #config.section_('General')
-config.General.requestName = '%s_AODSIM'%Mass_tag
+config.General.requestName = 'HToAATo2TauHad2Photon_%s_pythia8_AOD'%Mass_tag
 config.General.workArea = 'large_scale_runs'
 config.General.transferOutputs = True
 config.General.transferLogs = True
