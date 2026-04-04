@@ -152,3 +152,61 @@ process = customizeHLTforMC(process)
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete
 process = customiseEarlyDelete(process)
 # End adding early deletion
+
+import fnmatch
+
+# Toggle for writing a trigger-skimmed premix RAW output.
+ENABLE_HLT_SKIM = True
+
+# HLT paths to select on (glob patterns expanded against `process.paths_()`).
+HLT_SKIM_PATH_GLOBS = [
+    # Diphoton triggers
+    "HLT_Diphoton*",
+    "HLT_DoublePhoton*",
+    # Single-photon triggers (optional)
+    "HLT_Photon*",
+    # Ditau triggers (optional)
+    "HLT_DoubleMediumChargedIsoPFTauHPS*",
+    "HLT_DoubleTightChargedIsoPFTauHPS*",
+]
+
+# Recommended Run 3 online MET noise filters path in the HLT menu.
+RUN3_MET_FILTERS_HLT_PATH = "HLT_METFilters"
+
+
+def _expand_hlt_path_globs(globs):
+    available = list(process.paths_())
+    selected = sorted({p for p in available for g in globs if fnmatch.fnmatch(p, g)})
+    return selected
+
+
+_selected_hlt_paths = []
+if ENABLE_HLT_SKIM:
+    _selected_hlt_paths = _expand_hlt_path_globs(HLT_SKIM_PATH_GLOBS)
+    if not _selected_hlt_paths:
+        raise RuntimeError(
+            "HLT skim configuration matched zero paths. "
+            f"Update HLT_SKIM_PATH_GLOBS (current={HLT_SKIM_PATH_GLOBS})."
+        )
+
+if RUN3_MET_FILTERS_HLT_PATH not in process.paths_():
+    print(
+        "[HLT_Pileup_HToAATo2Tau2Photon_cfg_with_trigger] "
+        f"WARNING: '{RUN3_MET_FILTERS_HLT_PATH}' not found in this HLT menu."
+    )
+
+# Ensure trigger bits + trigger objects are kept for downstream RECO/PAT.
+process.PREMIXRAWoutput.outputCommands.extend(
+    cms.untracked.vstring(
+        "keep edmTriggerResults_TriggerResults__HLT",
+        "keep triggerTriggerEvent_*_*_HLT",
+        "keep *_hltTriggerSummaryAOD_*_HLT",
+        "keep *_hltTriggerSummaryRAW_*_HLT",
+    )
+)
+
+# Skim output to events passing any selected HLT path.
+if ENABLE_HLT_SKIM:
+    process.PREMIXRAWoutput.SelectEvents = cms.untracked.PSet(
+        SelectEvents=cms.vstring(*_selected_hlt_paths)
+    )

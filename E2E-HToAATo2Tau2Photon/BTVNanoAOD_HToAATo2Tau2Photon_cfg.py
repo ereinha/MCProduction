@@ -1,13 +1,8 @@
-# Auto generated configuration file
-# using:
-# Revision: 1.19
-# Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v
-# with command line options: --python_filename AOD_HToAATo2Tau2Photon_cfg.py --eventcontent AODSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier AODSIM --fileout file:AOD_HToAATo2Tau2Photon.root --conditions 130X_mcRun3_2023_realistic_postBPix_v6 --step RAW2DIGI,L1Reco,RECO,RECOSIM --geometry DB:Extended --filein file:HLT_Pielup_HToAATo2Tau2Photon.root --era Run3_2023 --no_exec --mc -n -1
 import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Run3_2023_cff import Run3_2023
 
-process = cms.Process('RECO',Run3_2023)
+process = cms.Process('NANO',Run3_2023)
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -17,10 +12,7 @@ process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
-process.load('Configuration.StandardSequences.RawToDigi_cff')
-process.load('Configuration.StandardSequences.L1Reco_cff')
-process.load('Configuration.StandardSequences.Reconstruction_cff')
-process.load('Configuration.StandardSequences.RecoSim_cff')
+process.load('PhysicsTools.NanoAOD.nano_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
@@ -31,7 +23,7 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring('file:HLT_Pileup_HToAATo2Tau2Photon.root'),
+    fileNames = cms.untracked.vstring('file:MiniAOD_HToAATo2Tau2Photon.root'),
     secondaryFileNames = cms.untracked.vstring()
 )
 
@@ -69,72 +61,47 @@ process.options = cms.untracked.PSet(
 
 # Production Info
 process.configurationMetadata = cms.untracked.PSet(
-    annotation = cms.untracked.string('--python_filename nevts:-1'),
+    annotation = cms.untracked.string('BTVNanoAOD --python_filename nevts:-1'),
     name = cms.untracked.string('Applications'),
     version = cms.untracked.string('$Revision: 1.19 $')
 )
 
 # Output definition
 
-process.AODSIMoutput = cms.OutputModule("PoolOutputModule",
+process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
-    compressionLevel = cms.untracked.int32(4),
+    compressionLevel = cms.untracked.int32(9),
     dataset = cms.untracked.PSet(
-        dataTier = cms.untracked.string('AODSIM'),
+        dataTier = cms.untracked.string('NANOAODSIM'),
         filterName = cms.untracked.string('')
     ),
-    eventAutoFlushCompressedSize = cms.untracked.int32(31457280),
-    fileName = cms.untracked.string('file:AOD_HToAATo2Tau2Photon_extra_collection.root'),
-    # outputCommands = process.AODSIMEventContent.outputCommands,
-    outputCommands = process.AODSIMEventContent.outputCommands + cms.untracked.vstring(
-        # diphoton+ditau selector
-        'keep *_genParticles_*_*',
-        'keep *_gedPhotons_*_*',
-
-        # ECAL/HCAL inputs for image fillers
-        'keep *_reducedEcalRecHitsEB_*_*',
-        'keep *_reducedEcalRecHitsEE_*_*',
-        'keep *_hbhereco_*_*',
-
-        # tracking + vertices + tracker rechits
-        'keep *_generalTracks_*_*',
-        'keep *_offlinePrimaryVertices_*_*',
-        'keep *_siPixelRecHits_*_*',
-        'keep *_siStripMatchedRecHits_*_*',
-
-        # PF + MET
-        'keep *_particleFlow_*_*',
-        'keep *_pfMet_*_*',
-
-        # jet/IP info path
-        'keep *_ak8PFJets_*_*',
-        'keep *_ak8PFJetsCHS_*_*',
-        'keep *_ak4PFJets_*_*',
-        'keep *_ak4PFJetsCHS_*_*',
-        )
-    overrideInputFileSplitLevels = cms.untracked.bool(True)
+    fileName = cms.untracked.string('file:BTVNanoAOD_HToAATo2Tau2Photon.root'),
+    outputCommands = process.NANOAODSIMEventContent.outputCommands
 )
 
 # Additional output definition
 
 # Other statements
 from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, '130X_mcRun3_2023_realistic_postBPix_v6', '')
+process.GlobalTag = GlobalTag(process.GlobalTag, '133X_mcRun3_2023_realistic_postBPix_ForNanov13_v2', '')
 
 # Path and EndPath definitions
-process.raw2digi_step = cms.Path(process.RawToDigi)
-process.L1Reco_step = cms.Path(process.L1Reco)
-process.reconstruction_step = cms.Path(process.reconstruction)
-process.recosim_step = cms.Path(process.recosim)
+process.nanoAOD_step = cms.Path(process.nanoSequenceMC)
 process.endjob_step = cms.EndPath(process.endOfProcess)
-process.AODSIMoutput_step = cms.EndPath(process.AODSIMoutput)
+process.NANOAODSIMoutput_step = cms.EndPath(process.NANOAODSIMoutput)
 
 # Schedule definition
-process.schedule = cms.Schedule(process.raw2digi_step,process.L1Reco_step,process.reconstruction_step,process.recosim_step,process.endjob_step,process.AODSIMoutput_step)
+process.schedule = cms.Schedule(process.nanoAOD_step,process.endjob_step,process.NANOAODSIMoutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
 # customisation of the process.
+
+# Automatic addition of the customisation function from PhysicsTools.NanoAOD.nano_cff
+from PhysicsTools.NanoAOD.nano_cff import nanoAOD_customizeCommon
+
+#call to customisation function nanoAOD_customizeCommon imported from PhysicsTools.NanoAOD.nano_cff
+process = nanoAOD_customizeCommon(process)
 
 # Automatic addition of the customisation function from Configuration.DataProcessing.Utils
 from Configuration.DataProcessing.Utils import addMonitoring
@@ -142,14 +109,17 @@ from Configuration.DataProcessing.Utils import addMonitoring
 #call to customisation function addMonitoring imported from Configuration.DataProcessing.Utils
 process = addMonitoring(process)
 
+
+# Automatic addition of the customisation function from PhysicsTools.NanoAOD.custom_btv_cff
+from PhysicsTools.NanoAOD.custom_btv_cff import PrepBTVCustomNanoAOD_MC
+
+#call to customisation function PrepBTVCustomNanoAOD_MC imported from PhysicsTools.NanoAOD.custom_btv_cff
+process = PrepBTVCustomNanoAOD_MC(process)
+
 # End of customisation functions
 
 
 # Customisation from command line
-
-#Have logErrorHarvester wait for the same EDProducers to finish as those providing data for the OutputModule
-from FWCore.Modules.logErrorHarvester_cff import customiseLogErrorHarvesterUsingOutputCommands
-process = customiseLogErrorHarvesterUsingOutputCommands(process)
 
 # Add early deletion of temporary data products to reduce peak memory need
 from Configuration.StandardSequences.earlyDeleteSettings_cff import customiseEarlyDelete

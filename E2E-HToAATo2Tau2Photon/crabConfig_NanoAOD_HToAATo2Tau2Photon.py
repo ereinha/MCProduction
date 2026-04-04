@@ -3,11 +3,11 @@ config = config()
 
 Mass_tag = 'm3p6To8'
 
-inputDataset_ = '/HToAATo2Tau2Photon_Hadronic_%s_pythia8_GEN_SIM'%Mass_tag
+inputDataset_ = '/GEN_SIM_HToAATo2Tau2Photon_m3p6To8_m3p6To8/lpcml-HToAATo2TauHad2Photon_m3p6To8_pythia8_MiniAOD-d639958dfa8e672fc82464be0b06406f/USER'
 
 
 #config.section_('General')
-config.General.requestName = '%s_NanoAODSIM'%Mass_tag
+config.General.requestName = 'HToAATo2TauHad2Photon_%s_pythia8_NanoAOD'%Mass_tag
 config.General.workArea = 'large_scale_runs'
 config.General.transferOutputs = True
 config.General.transferLogs = True

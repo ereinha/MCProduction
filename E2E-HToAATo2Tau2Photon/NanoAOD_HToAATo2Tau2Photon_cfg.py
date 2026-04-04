@@ -68,7 +68,7 @@ process.configurationMetadata = cms.untracked.PSet(
 
 # Output definition
 
-process.NANOEDMAODSIMoutput = cms.OutputModule("PoolOutputModule",
+process.NANOEDMAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
     compressionAlgorithm = cms.untracked.string('LZMA'),
     compressionLevel = cms.untracked.int32(9),
     dataset = cms.untracked.PSet(
@@ -76,7 +76,32 @@ process.NANOEDMAODSIMoutput = cms.OutputModule("PoolOutputModule",
         filterName = cms.untracked.string('')
     ),
     fileName = cms.untracked.string('file:NanoAOD_HToAATo2Tau2Photon.root'),
-    outputCommands = process.NANOAODSIMEventContent.outputCommands
+    outputCommands = process.NANOAODSIMEventContent.outputCommands + cms.untracked.vstring(
+        # diphoton+ditau selector
+        'keep *_genParticles_*_*',
+        'keep *_gedPhotons_*_*',
+
+        # ECAL/HCAL inputs for image fillers
+        'keep *_reducedEcalRecHitsEB_*_*',
+        'keep *_reducedEcalRecHitsEE_*_*',
+        'keep *_hbhereco_*_*',
+
+        # tracking + vertices + tracker rechits
+        'keep *_generalTracks_*_*',
+        'keep *_offlinePrimaryVertices_*_*',
+        'keep *_siPixelRecHits_*_*',
+        'keep *_siStripMatchedRecHits_*_*',
+
+        # PF + MET
+        'keep *_particleFlow_*_*',
+        'keep *_pfMet_*_*',
+
+        # jet/IP info path
+        'keep *_ak8PFJets_*_*',
+        'keep *_ak8PFJetsCHS_*_*',
+        'keep *_ak4PFJets_*_*',
+        'keep *_ak4PFJetsCHS_*_*',
+    ),
 )
 
 # Additional output definition

@@ -1,0 +1,16 @@
+import model --modelname HAHM_MG5model_v3/HAHM_variableMW_v3_UFO
+
+# 4-flavor proton content (no b/b~ PDFs)
+define p = g u c d s u~ c~ d~ s~
+define j = p
+
+# Two identical pseudoscalars in the decay chain
+define hs1 = hs
+define hs2 = hs
+
+# Higgs production (inclusive pp) with h -> hs hs
+# Mixed decay mode: one hs -> gamma gamma, the other hs -> tau+ tau-
+generate p p > h > hs1 hs2, hs1 > a a, hs2 > ta+ ta-
+add process p p > h > hs1 hs2 j, hs1 > a a, hs2 > ta+ ta-
+
+output hToaaTo2gamma2tau_ma15GeV_MLM_4f_max1j

@@ -81,16 +81,31 @@ process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",
     fastCloning = cms.untracked.bool(False),
     fileName = cms.untracked.string('file:MiniAOD_HToAATo2Tau2Photon.root'),
     #outputCommands = process.MINIAODSIMEventContent.outputCommands,
-    outputCommands = process.MINIAODSIMEventContent.outputCommands+cms.untracked.vstring(
-        'keep *_generalTracks_*_*',
-        'keep *_siPixelClusters_*_*',
-        'keep *_siStripClusters_*_*',
-        'keep *_siStripMatchedRecHits_*_*',
-        'keep *_siPixelRecHits_*_*',
-        'keep *_ecalRecHit_*_*',
+    outputCommands = process.MINIAODSIMEventContent.outputCommands + cms.untracked.vstring(
+        # diphoton+ditau selector
+        'keep *_genParticles_*_*',
+        'keep *_gedPhotons_*_*',
+
+        # ECAL/HCAL inputs for image fillers
+        'keep *_reducedEcalRecHitsEB_*_*',
+        'keep *_reducedEcalRecHitsEE_*_*',
         'keep *_hbhereco_*_*',
-        'keep *_reducedEcalRecHits*_*_*',
-        'keep *_reducedHcalRecHits_*_*'
+
+        # tracking + vertices + tracker rechits
+        'keep *_generalTracks_*_*',
+        'keep *_offlinePrimaryVertices_*_*',
+        'keep *_siPixelRecHits_*_*',
+        'keep *_siStripMatchedRecHits_*_*',
+
+        # PF + MET
+        'keep *_particleFlow_*_*',
+        'keep *_pfMet_*_*',
+
+        # jet/IP info path
+        'keep *_ak8PFJets_*_*',
+        'keep *_ak8PFJetsCHS_*_*',
+        'keep *_ak4PFJets_*_*',
+        'keep *_ak4PFJetsCHS_*_*',
     ),
     overrideBranchesSplitLevel = cms.untracked.VPSet(
         cms.untracked.PSet(
